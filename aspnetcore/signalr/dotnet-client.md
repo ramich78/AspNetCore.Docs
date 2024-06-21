@@ -3,9 +3,9 @@ title: ASP.NET Core SignalR .NET Client
 author: bradygaster
 description: Information about the ASP.NET Core SignalR .NET Client
 monikerRange: '>= aspnetcore-2.1'
-ms.author: bradyg
+ms.author: wpickett
 ms.custom: mvc
-ms.date: 04/17/2019
+ms.date: 01/14/2020
 uid: signalr/dotnet-client
 ---
 
@@ -13,17 +13,31 @@ uid: signalr/dotnet-client
 
 The ASP.NET Core SignalR .NET client library lets you communicate with SignalR hubs from .NET apps.
 
-[View or download sample code](https://github.com/aspnet/AspNetCore.Docs/tree/master/aspnetcore/signalr/dotnet-client/sample) ([how to download](xref:index#how-to-download-a-sample))
+[View or download sample code](https://github.com/dotnet/AspNetCore.Docs/tree/main/aspnetcore/signalr/dotnet-client/sample) ([how to download](xref:index#how-to-download-a-sample))
 
 The code sample in this article is a WPF app that uses the ASP.NET Core SignalR .NET client.
 
 ## Install the SignalR .NET client package
 
-The `Microsoft.AspNetCore.SignalR.Client` package is needed for .NET clients to connect to SignalR hubs. To install the client library, run the following command in the **Package Manager Console** window:
+The [Microsoft.AspNetCore.SignalR.Client](https://www.nuget.org/packages/Microsoft.AspNetCore.SignalR.Client) package is required for .NET clients to connect to SignalR hubs.
+
+# [Visual Studio](#tab/visual-studio)
+
+To install the client library, run the following command in the **Package Manager Console** window:
 
 ```powershell
 Install-Package Microsoft.AspNetCore.SignalR.Client
 ```
+
+# [.NET CLI](#tab/net-cli)
+
+To install the client library, run the following command in a command shell:
+
+```dotnetcli
+dotnet add package Microsoft.AspNetCore.SignalR.Client
+```
+
+---
 
 ## Connect to a hub
 
@@ -33,7 +47,7 @@ To establish a connection, create a `HubConnectionBuilder` and call `Build`. The
 
 ## Handle lost connection
 
-::: moniker range=">= aspnetcore-3.0"
+:::moniker range=">= aspnetcore-3.0"
 
 ### Automatically reconnect
 
@@ -41,7 +55,7 @@ The <xref:Microsoft.AspNetCore.SignalR.Client.HubConnection> can be configured t
 
 ```csharp
 HubConnection connection= new HubConnectionBuilder()
-    .WithUrl(new Uri("http://127.0.0.1:5000/chatHub"))
+    .WithUrl(new Uri("http://127.0.0.1:5000/chathub"))
     .WithAutomaticReconnect()
     .Build();
 ```
@@ -126,7 +140,7 @@ In order to configure a custom number of reconnect attempts before disconnecting
 
 ```csharp
 HubConnection connection= new HubConnectionBuilder()
-    .WithUrl(new Uri("http://127.0.0.1:5000/chatHub"))
+    .WithUrl(new Uri("http://127.0.0.1:5000/chathub"))
     .WithAutomaticReconnect(new[] { TimeSpan.Zero, TimeSpan.Zero, TimeSpan.FromSeconds(10) })
     .Build();
 
@@ -143,7 +157,7 @@ The custom behavior then diverges again from the default behavior by stopping af
 
 If you want even more control over the timing and number of automatic reconnect attempts, `WithAutomaticReconnect` accepts an object implementing the `IRetryPolicy` interface, which has a single method named `NextRetryDelay`.
 
-`NextRetryDelay` takes a single argument with the type `RetryContext`. The `RetryContext` has three properties: `PreviousRetryCount`, `ElapsedTime` and `RetryReason` which are a `long`, a `TimeSpan` and an `Exception` respectively. Before the first reconnect attempt, both `PreviousRetryCount` and `ElapsedTime` will be zero, and the `RetryReason` will be the Exception that caused the connection to be lost. After each failed retry attempt, `PreviousRetryCount` will be incremented by one, `ElapsedTime` will be updated to reflect the amount of time spent reconnecting so far, and the `RetryReason` will be the Exception that caused the last reconnect attempt to fail.
+`NextRetryDelay` takes a single argument with the type `RetryContext`. The `RetryContext` has three properties: `PreviousRetryCount`, `ElapsedTime` and `RetryReason`, which are a `long`, a `TimeSpan` and an `Exception` respectively. Before the first reconnect attempt, both `PreviousRetryCount` and `ElapsedTime` will be zero, and the `RetryReason` will be the Exception that caused the connection to be lost. After each failed retry attempt, `PreviousRetryCount` will be incremented by one, `ElapsedTime` will be updated to reflect the amount of time spent reconnecting so far, and the `RetryReason` will be the Exception that caused the last reconnect attempt to fail.
 
 `NextRetryDelay` must return either a TimeSpan representing the time to wait before the next reconnect attempt or `null` if the `HubConnection` should stop reconnecting.
 
@@ -158,7 +172,7 @@ public class RandomRetryPolicy : IRetryPolicy
         // wait between 0 and 10 seconds before the next reconnect attempt.
         if (retryContext.ElapsedTime < TimeSpan.FromSeconds(60))
         {
-            return TimeSpan.FromSeconds(_random.Next() * 10);
+            return TimeSpan.FromSeconds(_random.NextDouble() * 10);
         }
         else
         {
@@ -171,23 +185,23 @@ public class RandomRetryPolicy : IRetryPolicy
 
 ```csharp
 HubConnection connection = new HubConnectionBuilder()
-    .WithUrl(new Uri("http://127.0.0.1:5000/chatHub"))
+    .WithUrl(new Uri("http://127.0.0.1:5000/chathub"))
     .WithAutomaticReconnect(new RandomRetryPolicy())
     .Build();
 ```
 
 Alternatively, you can write code that will reconnect your client manually as demonstrated in [Manually reconnect](#manually-reconnect).
 
-::: moniker-end
+:::moniker-end
 
 ### Manually reconnect
 
-::: moniker range="< aspnetcore-3.0"
+:::moniker range="< aspnetcore-3.0"
 
 > [!WARNING]
 > Prior to 3.0, the .NET client for SignalR doesn't automatically reconnect. You must write code that will reconnect your client manually.
 
-::: moniker-end
+:::moniker-end
 
 Use the <xref:Microsoft.AspNetCore.SignalR.Client.HubConnection.Closed> event to respond to a lost connection. For example, you might want to automate reconnection.
 
@@ -217,7 +231,7 @@ The `InvokeAsync` method returns a `Task` which completes when the server method
 The `SendAsync` method returns a `Task` which completes when the message has been sent to the server. No return value is provided since this `Task` doesn't wait until the server method completes. Any exceptions thrown on the client while sending the message produce a faulted `Task`. Use `await` and `try...catch` syntax to handle send errors.
 
 > [!NOTE]
-> If you're using Azure SignalR Service in *Serverless mode*, you cannot call hub methods from a client. For more information, see the [SignalR Service documentation](/azure/azure-signalr/signalr-concept-serverless-development-config).
+> Calling hub methods from a client is only supported when using the Azure SignalR Service in *Default* mode. For more information, see [Frequently Asked Questions (azure-signalr GitHub repository)](https://github.com/Azure/azure-signalr/blob/dev/docs/faq.md#what-is-the-meaning-of-service-mode-defaultserverlessclassic-how-can-i-choose).
 
 ## Call client methods from hub
 
@@ -228,6 +242,9 @@ Define methods the hub calls using `connection.On` after building, but before st
 The preceding code in `connection.On` runs when server-side code calls it using the `SendAsync` method.
 
 [!code-csharp[Call client method](dotnet-client/sample/signalrchat/hubs/chathub.cs?name=snippet_SendMessage)]
+
+> [!NOTE]
+> While the hub side of the connection supports strongly-typed messaging, the client must register using the generic method <xref:Microsoft.AspNetCore.SignalR.Client.HubConnection.On%2A?displayProperty=nameWithType> with the method name. For an example, see <xref:signalr/background-services#call-a-signalr-hub-from-a-background-service>.
 
 ## Error handling and logging
 

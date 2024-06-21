@@ -7,14 +7,14 @@ namespace TodoApi
 {
     public class Startup2
     {
-        #region snippet_ConfigureServices
+        // <snippet_ConfigureServices>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<TodoContext>(opt =>
                 opt.UseInMemoryDatabase("TodoList"));
             services.AddMvc();
 
-            #region snippet_AddSwaggerDocument
+            // <snippet_AddSwaggerDocument>
             services.AddSwaggerDocument(config =>
             {
                 config.PostProcess = document =>
@@ -36,20 +36,24 @@ namespace TodoApi
                     };
                 };
             });
-            #endregion snippet_AddSwaggerDocument
+            // </snippet_AddSwaggerDocument>
         }
-        #endregion snippet_ConfigureServices
+        // </snippet_ConfigureServices>
 
-        #region snippet_Configure
+        // <snippet_Configure>
         public void Configure(IApplicationBuilder app)
         {
             app.UseStaticFiles();
 
             app.UseOpenApi();
-            app.UseSwaggerUi3();
+            app.UseOpenApi();
+            if (env.IsDevelopment())
+            {
+                app.UseSwaggerUi3();
+            }
 
             app.UseMvc();
         }
-        #endregion snippet_Configure
+        // </snippet_Configure>
     }
 }

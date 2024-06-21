@@ -3,7 +3,7 @@ title: Performance Diagnostics Tools
 author: mjrousos
 description: Useful tools for diagnosing performance issues in ASP.NET Core apps.
 monikerRange: '>= aspnetcore-1.1'
-ms.author: riande
+ms.author: tdykstra
 ms.date: 04/11/2019
 uid: performance/diagnostic-tools
 ---
@@ -35,19 +35,19 @@ Azure Application Insights provides multiple ways to give insights on monitored 
 
 - [Azure Application Insights Profiler](/azure/azure-monitor/app/profiler) allows regular and on-demand profiling of .NET apps.  Azure portal shows captured performance traces with call stacks and hot paths. The trace files can also be downloaded for deeper analysis using PerfView.
 
-Application Insights can be used in a variety environments:
+Application Insights can be used in a variety of environments:
 
 - Optimized to work in Azure.
 - Works in production, development, and staging.
 - Works locally from [Visual Studio](/azure/application-insights/app-insights-visual-studio) or in other hosting environments.
 
-For more information, see [Application Insights for ASP.NET Core](/azure/application-insights/app-insights-asp-net-core).
+For more information on code-based monitoring, see [Application Insights for ASP.NET Core](/azure/application-insights/app-insights-asp-net-core). For more information on codeless monitoring, see [Monitor Azure App Service performance](/azure/azure-monitor/app/azure-web-apps?tabs=netcore).
 
 ## PerfView
 
 [PerfView](https://github.com/Microsoft/perfview) is a performance analysis tool created by the .NET team specifically for diagnosing .NET performance issues. PerfView allows analysis of CPU usage, memory and GC behavior, performance events, and wall clock time.
 
-You can learn more about PerfView and how to get started with [PerfView video tutorials](http://channel9.msdn.com/Series/PerfView-Tutorial) or by reading the user's guide available in the tool or [on GitHub](https://github.com/Microsoft/perfview).
+For more about PerfView, see the user's guide available in the tool or [on GitHub](https://github.com/Microsoft/perfview).
 
 ## Windows Performance Toolkit
 
@@ -55,7 +55,7 @@ You can learn more about PerfView and how to get started with [PerfView video tu
 
 ## PerfCollect
 
-While PerfView is a useful performance analysis tool for .NET scenarios, it only runs on Windows so you can't use it to collect traces from ASP.NET Core apps running in Linux environments.
+While PerfView is a useful performance analysis tool for .NET scenarios, it only runs on Windows, so you can't use it to collect traces from ASP.NET Core apps running in Linux environments.
 
 [PerfCollect](https://github.com/dotnet/coreclr/blob/master/Documentation/project-docs/linux-performance-tracing.md) is a bash script that uses native Linux profiling tools ([Perf](https://perf.wiki.kernel.org/index.php/Main_Page) and [LTTng](https://lttng.org/)) to collect traces on Linux that can be analyzed by PerfView. PerfCollect is useful when performance problems show up in Linux environments where PerfView can't be used directly. Instead, PerfCollect can collect traces from .NET Core apps that are then analyzed on a Windows computer using PerfView.
 
@@ -66,5 +66,5 @@ More information about how to install and get started with PerfCollect is availa
 The following lists some third-party performance tools that are useful in performance investigation of .NET Core applications.
 
 - [MiniProfiler](https://miniprofiler.com/)
-- dotTrace and dotMemory from JetBrains
-- VTune from Intel
+- [dotTrace](https://www.jetbrains.com/profiler/) and [dotMemory](https://www.jetbrains.com/dotmemory/) from [JetBrains](https://www.jetbrains.com/)
+- [VTune](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler.html) from Intel

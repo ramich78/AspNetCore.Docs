@@ -1,0 +1,16 @@
+{
+    "AzureDevOps": {
+        "Org": "msft-skilling",
+        "Project": "Content",
+        "AreaPath": "Production\\Digital and App Innovation\\DotNet and more\\ASP.NET"
+    },
+    "ImportTriggerLabel": "reQUEST",
+    "ImportedLabel": "seQUESTered"
+    "DefaultParentNode": 227486,
+    "WorkItemTags": [
+        {
+            "Label": "9.0",
+            "Tag": "new feature"
+        }
+    ]
+}

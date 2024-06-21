@@ -4,10 +4,13 @@
     "blanks-around-lists": false,
     "blanks-around-fences": false,
     "blanks-around-headers": true,
+    "emphasis-style": {
+      "style": "asterisk"
+    },
     "fenced-code-language": true,
     "first-header-h1": false,
     "first-line-h1": false,
-    "header-increment": true,
+    "header-increment": false,
     "header-start-left": true,
     "header-style": {
         "style": "atx"
@@ -21,7 +24,7 @@
     "no-alt-text": true,
     "no-bare-urls": true,
     "no-blanks-blockquote": true,
-    "no-duplicate-header": true,
+    "no-duplicate-header": false,
     "no-empty-links": true,
     "no-hard-tabs": true,
     "no-inline-html": {
@@ -60,6 +63,12 @@
         ]
     },
     "required-headers": false,
-    "single-h1": true,
-    "ul-start-left": false
+    "single-h1": false,
+    "strong-style": {
+      "style": "asterisk"
+    },
+    "ul-start-left": false,
+    "ul-style": {
+      "style": "asterisk"
+    }
 }

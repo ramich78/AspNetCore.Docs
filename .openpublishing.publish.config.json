@@ -9,33 +9,59 @@
       "moniker_ranges": [
         ">= aspnetcore-1.0"
       ],
+      "xref_query_tags": [
+        "/dotnet",
+        "/aspnet"
+      ],
       "open_to_public_contributors": true,
       "type_mapping": {
         "Conceptual": "Content",
         "ManagedReference": "Content",
-        "RestApi": "Content"
+        "RestApi": "Content",
+        "ZonePivotGroups": "Toc"
       },
       "template_folder": "_themes",
       "version": 0
     }
   ],
-  "notification_subscribers": [],
+  "notification_subscribers": [
+    "riande@microsoft.com"
+  ],
   "branches_to_filter": [],
-  "git_repository_branch_open_to_public_contributors": "master",
+  "git_repository_branch_open_to_public_contributors": "main",
   "skip_source_output_uploading": false,
   "need_preview_pull_request": true,
   "need_pr_comments": false,
+  "contribution_branch_mappings": null,
   "dependent_repositories": [
     {
       "path_to_root": "_themes",
       "url": "https://github.com/Microsoft/templates.docs.msft",
-      "branch": "master",
+      "branch": "main",
       "branch_mapping": {}
     },
     {
       "path_to_root": "_themes.pdf",
       "url": "https://github.com/Microsoft/templates.docs.msft.pdf",
-      "branch": "master",
+      "branch": "main",
+      "branch_mapping": {}
+    },
+    {
+      "path_to_root": "xamarin-forms-samples",
+      "url": "https://github.com/xamarin/xamarin-forms-samples",
+      "branch": "main",
+      "branch_mapping": {}
+    },
+    {
+      "path_to_root": "blazor-samples",
+      "url": "https://github.com/dotnet/blazor-samples",
+      "branch": "main",
+      "branch_mapping": {}
+    },
+    {
+      "path_to_root": "AspNetCore.Docs.Samples",
+      "url": "https://github.com/dotnet/AspNetCore.Docs.Samples",
+      "branch": "main",
       "branch_mapping": {}
     }
   ],
@@ -44,7 +70,7 @@
       "Publish",
       "Pdf"
     ],
-    "master": [
+    "main": [
       "Publish",
       "Pdf"
     ]
@@ -56,5 +82,8 @@
     }
   },
   "need_generate_pdf": false,
-  "need_generate_intellisense": false
+  "need_generate_intellisense": false,
+  "docs_build_engine": {
+    "name": "docfx_v3"
+  }
 }

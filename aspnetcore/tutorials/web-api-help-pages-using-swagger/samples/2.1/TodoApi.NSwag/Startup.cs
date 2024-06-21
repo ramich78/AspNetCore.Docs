@@ -8,7 +8,7 @@ namespace TodoApi
 {
     public class Startup
     {
-        #region snippet_ConfigureServices
+        // <snippet_ConfigureServices>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<TodoContext>(opt =>
@@ -19,19 +19,22 @@ namespace TodoApi
             // Register the Swagger services
             services.AddSwaggerDocument();
         }
-        #endregion snippet_ConfigureServices
+        // </snippet_ConfigureServices>
 
-        #region snippet_Configure
+        // <snippet_Configure>
         public void Configure(IApplicationBuilder app)
         {
             app.UseStaticFiles();
 
             // Register the Swagger generator and the Swagger UI middlewares
             app.UseOpenApi();
-            app.UseSwaggerUi3();
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwaggerUi3();
+            }
 
             app.UseMvc();
         }
-        #endregion snippet_Configure
+        // </snippet_Configure>
     }
 }

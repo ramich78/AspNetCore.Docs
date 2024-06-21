@@ -1,20 +1,26 @@
 ---
 title: Get started with ASP.NET Core MVC
-author: rick-anderson
+author: wadepickett
 description: Learn how to get started with ASP.NET Core MVC.
-ms.author: riande
-ms.date: 04/24/2019
+monikerRange: '>= aspnetcore-3.1'
+ms.author: wpickett
+ms.date: 05/14/2024
 uid: tutorials/first-mvc-app/start-mvc
+ms.custom: engagement-fy23
 ---
 # Get started with ASP.NET Core MVC
 
+[!INCLUDE[](~/includes/not-latest-version.md)]
+
 By [Rick Anderson](https://twitter.com/RickAndMSFT)
+
+:::moniker range=">= aspnetcore-8.0"
 
 [!INCLUDE [consider RP](~/includes/razor.md)]
 
-This tutorial teaches the basics of building an ASP.NET Core MVC web app.
+This is the first tutorial of a series that teaches ASP.NET Core MVC web development with controllers and views.
 
-The app manages a database of movie titles. You learn how to:
+At the end of the series, you'll have an app that manages and displays movie data. You learn how to:
 
 > [!div class="checklist"]
 > * Create a web app.
@@ -22,79 +28,83 @@ The app manages a database of movie titles. You learn how to:
 > * Work with a database.
 > * Add search and validation.
 
-At the end, you have an app that can manage and display movie data.
-
-[!INCLUDE[](~/includes/mvc-intro/download.md)]
+[View or download sample code](https://github.com/dotnet/AspNetCore.Docs/tree/main/aspnetcore/tutorials/first-mvc-app/start-mvc/sample) ([how to download](xref:index#how-to-download-a-sample)).
 
 ## Prerequisites
 
 # [Visual Studio](#tab/visual-studio)
 
-[!INCLUDE[](~/includes/net-core-prereqs-vs2019-2.2.md)]
+[!INCLUDE[](~/includes/net-prereqs-vs-8.0.md)]
 
 # [Visual Studio Code](#tab/visual-studio-code)
 
-[!INCLUDE[](~/includes/net-core-prereqs-vsc-2.2.md)]
+[!INCLUDE[](~/includes/net-prereqs-vsc-8.0.md)]
 
 # [Visual Studio for Mac](#tab/visual-studio-mac)
 
-[!INCLUDE[](~/includes/net-core-prereqs-mac-2.2.md)]
+[!INCLUDE[](~/includes/net-prereqs-mac-8.0.md)]
 
 ---
+
+<!-- 
+Each new version, change the layout file to use the non-minified CSS. 
+See https://github.com/dotnet/AspNetCore.Docs/issues/21193
+-->
+
 ## Create a web app
 
 # [Visual Studio](#tab/visual-studio)
 
-* From the Visual Studio select **Create a new project**.
+* Start Visual Studio and select **Create a new project**.
+* In the **Create a new project** dialog, select **ASP.NET Core Web App (Model-View-Controller)** > **Next**.
+* In the **Configure your new project** dialog:
+  * Enter `MvcMovie` for **Project name**. It's important to name the project *MvcMovie*. Capitalization needs to match each `namespace` when code is copied.
+  * The **Location** for the project can be set to anywhere.
+* Select **Next**.
+* In the **Additional information** dialog:
+  * Select **.NET 8.0 (Long Term Support)**.
+  * Verify that **Do not use top-level statements** is unchecked.
+* Select **Create**.
 
-* Selecct **ASP.NET Core Web Application** and then select **Next**.
+![Additional info dialog](~/tutorials/first-mvc-app/start-mvc/_static/8/additional-info-VS22-17.9.0.png)
 
-![new ASP.NET Core Web Application](start-mvc/_static/np_2.1.png)
+For more information, including alternative approaches to create the project, see [Create a new project in Visual Studio](/visualstudio/ide/create-new-project).
 
-* Name the project **MvcMovie** and select **Create**. It's important to name the project **MvcMovie** so when you copy code, the namespace will match.
+Visual Studio uses the default project template for the created MVC project. The created project:
 
-  ![new ASP.NET Core Web Application](start-mvc/_static/config.png)
-
-
-* Select **Web Application(Model-View-Controller)**, and then select **Create**.
-
-![New project dialog, .NET Core in left pane, ASP.NET Core web ](start-mvc/_static/new_project22-21.png)
-
-Visual Studio used the default template for the MVC project you just created. You have a working app right now by entering a project name and selecting a few options. This is a basic starter project, and it's a good place to start.
+* Is a working app.
+* Is a basic starter project.
 
 # [Visual Studio Code](#tab/visual-studio-code)
 
-The tutorial assumes familarity with VS Code. See [Getting started with VS Code](https://code.visualstudio.com/docs) and [Visual Studio Code help](#visual-studio-code-help) for more information.
+The tutorial assumes familiarity with VS Code. For more information, see [Getting started with VS Code](https://code.visualstudio.com/docs) and [Visual Studio Code help](#visual-studio-code-help).
 
-* Open the [integrated terminal](https://code.visualstudio.com/docs/editor/integrated-terminal).
-* Change directories (`cd`) to a folder which will contain the project.
-* Run the following command:
+* Select **New Terminal** from the **Terminal** menu to open the [integrated terminal](https://code.visualstudio.com/docs/editor/integrated-terminal).
+* Change to the directory (`cd`) that will contain the project. The project can be located anywhere.
+* Run the following commands:
 
-   ```console
+   ```dotnetcli
    dotnet new mvc -o MvcMovie
    code -r MvcMovie
    ```
 
-  * A dialog box appears with **Required assets to build and debug are missing from 'MvcMovie'. Add them?**  Select **Yes**
+  The `dotnet new` command creates a new ASP.NET Core MVC project in the *MvcMovie* folder.
 
-  * `dotnet new mvc -o MvcMovie`: creates a new ASP.NET Core MVC project in the *MvcMovie* folder.
-  * `code -r MvcMovie`: Loads the *MvcMovie.csproj* project file in Visual Studio Code.
+  The `code` command opens the *MvcMovie* project folder in the current instance of Visual Studio Code.
+
+[!INCLUDE[](~/includes/vscode-trust-authors-add-assets.md)]
 
 # [Visual Studio for Mac](#tab/visual-studio-mac)
 
-* Select **File** > **New Solution**.
-
-  ![macOS New solution](./start-mvc/_static/new_project_vsmac.png)
-
-* Select **.NET Core** > **App** > **Web Application (Model-View-Controller)** > **Next**.
-
-  ![macOS New project dialog](./start-mvc/_static/new_project_mvc_vsmac.png)
-
-* In the **Configure your new ASP.NET Core Web API** dialog, accept the default **Target Framework** of **.NET Core 2.2**.
-
-  ![macOS .NET Core 2.2 selection](./start-mvc/_static/new_project_22_vsmac.png)
-
-* Name the project **MvcMovie**, and then select **Create**.
+* Select **File** > **New Project...**.
+* Select **Web and Console** > **App** > **Web Application (Model-View-Controller)** > **Continue**.
+* In the **Configure your new Web Application (Model-View-Controller)** dialog:
+  * Select **.NET 8.0** for the **Target Framework**.
+  * Verify that **Do not use top-level statements** is unchecked.
+* Select **Continue**.
+* Enter `MvcMovie` for **Project name**. It's important to name the project *MvcMovie*. Capitalization needs to match each `namespace` when code is copied.
+* The **Location** for the project can be set to anywhere.
+* Select **Create**.
 
 ---
 
@@ -102,68 +112,97 @@ The tutorial assumes familarity with VS Code. See [Getting started with VS Code]
 
 # [Visual Studio](#tab/visual-studio)
 
-Select **Ctrl-F5** to run the app in non-debug mode.
+* Press <kbd>Ctrl</kbd>+<kbd>F5</kbd> to run the app without the debugger.
 
-[!INCLUDE[](~/includes/trustCertVS.md)]
+  [!INCLUDE[](~/includes/trustCertVS.md)]
 
-* Visual Studio starts [IIS Express](/iis/extensions/introduction-to-iis-express/iis-express-overview) and runs the app. Notice that the address bar shows `localhost:port#` and not something like `example.com`. That's because `localhost` is the standard hostname for your local computer. When Visual Studio creates a web project, a random port is used for the web server.
-* Launching the app with Ctrl+F5 (non-debug mode) allows you to make code changes, save the file, refresh the browser, and see the code changes. Many developers prefer to use non-debug mode to quickly launch the app and view changes.
-* You can launch the app in debug or non-debug mode from the **Debug** menu item:
+Visual Studio runs the app and opens the default browser.
 
-  ![Debug menu](start-mvc/_static/debug_menu.png)
+The address bar shows `localhost:<port#>` and not something like `example.com`. The standard hostname for your local computer is `localhost`. When Visual Studio creates a web project, a random port is used for the web server.
 
-* You can debug the app by selecting the **IIS Express** button
+Launching the app without debugging by pressing <kbd>Ctrl</kbd>+<kbd>F5</kbd> allows you to:
 
-  ![IIS Express](start-mvc/_static/iis_express.png)
+* Make code changes.
+* Save the file.
+* Quickly refresh the browser and see the code changes.
 
-* Select **Accept** to consent to tracking. This app doesn't track personal information. The template generated code includes assets to help meet [General Data Protection Regulation (GDPR)](xref:security/gdpr).
+You can launch the app in debug or non-debug mode from the **Debug** menu:
 
-  ![Home or Index page](start-mvc/_static/privacy.png)
+![Start Debug and Start Without Debugging menus](~/tutorials/first-mvc-app/start-mvc/_static/8/debug-and-without-debug-menus-VS22-17.8.0.png)
 
-  The following image shows the app after accepting tracking:
+You can debug the app by selecting the **https** button in the toolbar:
 
-  ![Home or Index page](start-mvc/_static/home2.2.png)
+![MvcMovie debug button](~/tutorials/first-mvc-app/start-mvc/_static/8/debug-button-VS22-17.8.0.png)
+
+The following image shows the app:
+
+![Home or Index page](~/tutorials/first-mvc-app/start-mvc/_static/home80-vs.png)
+
+* Close the browser window.  Visual Studio will stop the application.
 
 # [Visual Studio Code](#tab/visual-studio-code)
 
-Press Ctrl+F5 to run without the debugger.
-
 [!INCLUDE[](~/includes/trustCertVSC.md)]
 
-  Visual Studio Code starts [Kestrel](xref:fundamentals/servers/kestrel), launches a browser, and navigates to `https://localhost:5001`. The address bar shows `localhost:port:5001` and not something like `example.com`. That's because `localhost` is the standard hostname for  local computer. Localhost only serves web requests from the local computer.
+* In Visual Studio Code, press <kbd>Ctrl</kbd>+<kbd>F5</kbd> (Windows)/<kbd>^</kbd>+<kbd>F5</kbd> (macOS) to run the app without debugging.
 
-  Launching the app with Ctrl+F5 (non-debug mode) allows you to make code changes, save the file, refresh the browser, and see the code changes. Many developers prefer to use non-debug mode to refresh the page and view changes.
+  Visual Studio Code:
 
-* Select **Accept** to consent to tracking. This app doesn't track personal information. The template generated code includes assets to help meet [General Data Protection Regulation (GDPR)](xref:security/gdpr).
+  * Starts [Kestrel](xref:fundamentals/servers/kestrel)
+  * Launches a browser.
+  * Navigates to `https://localhost:<port#>`.
 
-  ![Home or Index page](start-mvc/_static/privacy.png)
+  The address bar shows `localhost:<port#>` and not something like `example.com`. The standard hostname for your local computer is `localhost`. Localhost only serves web requests from the local computer.
 
-  The following image shows the app after accepting tracking:
+Launching the app without debugging by selecting Ctrl+F5 allows you to:
 
-  ![Home or Index page](start-mvc/_static/home2.2.png)
+* Make code changes.
+* Save the file.
+* Quickly refresh the browser and see the code changes.
+
+  ![Home or Index page](~/tutorials/first-mvc-app/start-mvc/_static/home80-vs.png)
+
+* Close the browser window.
+
+* In Visual Studio Code, from the *Run* menu, select *Stop Debugging* or press <kbd>Shift</kbd>+<kbd>F5</kbd> to stop the app.
 
 # [Visual Studio for Mac](#tab/visual-studio-mac)
 
-Select **Run** > **Start Without Debugging** to launch the app. Visual Studio for Mac starts [Kestrel](xref:fundamentals/servers/index#kestrel) server, launches a browser, and navigates to `http://localhost:port`, where *port* is a randomly chosen port number.
+* Select Option+Command+Return to run the app without the debugger.
 
-[!INCLUDE[](~/includes/trustCertMac.md)]
+  Visual Studio for Mac:
 
-* The address bar shows `localhost:port#` and not something like `example.com`. That's because `localhost` is the standard hostname for your local computer. When Visual Studio creates a web project, a random port is used for the web server. When you run the app, you'll see a different port number.
-* You can launch the app in debug or non-debug mode from the **Run** menu.
+  * Starts [Kestrel](xref:fundamentals/servers/index#kestrel) server.
+  * Launches a browser.
+  * Navigates to `http://localhost:port`, where *port* is a randomly chosen port number, set when Visual Studio creates a web project.
 
-* Select **Accept** to consent to tracking. This app doesn't track personal information. The template generated code includes assets to help meet [General Data Protection Regulation (GDPR)](xref:security/gdpr).
+  [!INCLUDE[](~/includes/trustCertMacVS22.md)]
 
-  ![Home or Index page](./start-mvc/_static/output_privacy_macos.png)
+  The address bar shows `localhost:<port#>` and not something like `example.com`. The standard hostname for your local computer is `localhost`. Localhost only serves web requests from the local computer.
 
-  The following image shows the app after accepting tracking:
+You can launch the app in debug or non-debug mode from the **Debug** menu.
 
-  ![Home or Index page](./start-mvc/_static/output_macos.png)
+The following image shows the app:
+
+![Home or Index page](~/tutorials/first-mvc-app/start-mvc/_static/output_macos_VS22.png)
+
+* Close the browser window.  Visual Studio for Mac will stop the application.
 
 ---
 
 [!INCLUDE[](~/includes/vs-vsc-vsmac-help.md)]
 
-In the next part of this tutorial, you learn about MVC and start writing some code.
+In the next tutorial in this series, you learn about MVC and start writing some code.
 
 > [!div class="step-by-step"]
-> [Next](adding-controller.md)
+> [Next: Add a controller](~/tutorials/first-mvc-app/adding-controller.md)
+
+:::moniker-end
+
+[!INCLUDE[](~/tutorials/first-mvc-app/start-mvc/includes/start-mvc7.md)]
+
+[!INCLUDE[](~/tutorials/first-mvc-app/start-mvc/includes/start-mvc6.md)]
+
+[!INCLUDE[](~/tutorials/first-mvc-app/start-mvc/includes/start-mvc5.md)]
+
+[!INCLUDE[](~/tutorials/first-mvc-app/start-mvc/includes/start-mvc3.md)]

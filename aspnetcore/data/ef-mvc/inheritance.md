@@ -1,7 +1,7 @@
 ---
 title: "Tutorial: Implement inheritance - ASP.NET MVC with EF Core"
 description: "This tutorial will show you how to implement inheritance in the data model, using Entity Framework Core in an ASP.NET Core application."
-author: rick-anderson
+author: tdykstra
 ms.author: tdykstra
 ms.custom: mvc
 ms.date: 03/27/2019
@@ -39,19 +39,22 @@ Suppose you want to eliminate the redundant code for the properties that are sha
 
 ![Student and Instructor classes deriving from Person class](inheritance/_static/inheritance.png)
 
-There are several ways this inheritance structure could be represented in the database. You could have a Person table that includes information about both students and instructors in a single table. Some of the columns could apply only to instructors (HireDate), some only to students (EnrollmentDate), some to both (LastName, FirstName). Typically, you'd have a discriminator column to indicate which type each row represents. For example, the discriminator column might have "Instructor" for instructors and "Student" for students.
+There are several ways this inheritance structure could be represented in the database. You could have a `Person` table that includes information about both students and instructors in a single table. Some of the columns could apply only to instructors (HireDate), some only to students (EnrollmentDate), some to both (LastName, FirstName). Typically, you'd have a discriminator column to indicate which type each row represents. For example, the discriminator column might have "Instructor" for instructors and "Student" for students.
 
 ![Table-per-hierarchy example](inheritance/_static/tph.png)
 
-This pattern of generating an entity inheritance structure from a single database table is called table-per-hierarchy (TPH) inheritance.
+This pattern of generating an entity inheritance structure from a single database table is called *table-per-hierarchy (TPH)* inheritance.
 
-An alternative is to make the database look more like the inheritance structure. For example, you could have only the name fields in the Person table and have separate Instructor and Student tables with the date fields.
+An alternative is to make the database look more like the inheritance structure. For example, you could have only the name fields in the `Person` table and have separate `Instructor` and `Student` tables with the date fields.
+
+> [!WARNING]
+> Table-Per-Type (TPT) is not supported by EF Core 3.x, however it is has been implemented in [EF Core 5.0](/ef/core/what-is-new/ef-core-5.0/plan).
 
 ![Table-per-type inheritance](inheritance/_static/tpt.png)
 
-This pattern of making a database table for each entity class is called table per type (TPT) inheritance.
+This pattern of making a database table for each entity class is called *table-per-type (TPT)* inheritance.
 
-Yet another option is to map all non-abstract types to individual tables. All properties of a class, including inherited properties, map to columns of the corresponding table. This pattern is called Table-per-Concrete Class (TPC) inheritance. If you implemented TPC inheritance for the Person, Student, and Instructor classes as shown earlier, the Student and Instructor tables would look no different after implementing inheritance than they did before.
+Yet another option is to map all non-abstract types to individual tables. All properties of a class, including inherited properties, map to columns of the corresponding table. This pattern is called *Table-per-Concrete Class (TPC)* inheritance. If you implemented TPC inheritance for the `Person`, `Student`, and `Instructor` classes as shown earlier, the `Student` and `Instructor` tables would look no different after implementing inheritance than they did before.
 
 TPC and TPH inheritance patterns generally deliver better performance than TPT inheritance patterns, because TPT patterns can result in complex join queries.
 
@@ -68,17 +71,17 @@ In the Models folder, create Person.cs and replace the template code with the fo
 
 ## Update Instructor and Student
 
-In *Instructor.cs*, derive the Instructor class from the Person class and remove the key and name fields. The code will look like the following example:
+In `Instructor.cs`, derive the Instructor class from the Person class and remove the key and name fields. The code will look like the following example:
 
 [!code-csharp[](intro/samples/cu/Models/Instructor.cs?name=snippet_AfterInheritance&highlight=8)]
 
-Make the same changes in *Student.cs*.
+Make the same changes in `Student.cs`.
 
 [!code-csharp[](intro/samples/cu/Models/Student.cs?name=snippet_AfterInheritance&highlight=8)]
 
 ## Add Person to the model
 
-Add the Person entity type to *SchoolContext.cs*. The new lines are highlighted.
+Add the Person entity type to `SchoolContext.cs`. The new lines are highlighted.
 
 [!code-csharp[](intro/samples/cu/Data/SchoolContext.cs?name=snippet_AfterInheritance&highlight=19,30)]
 
@@ -88,13 +91,13 @@ This is all that the Entity Framework needs in order to configure table-per-hier
 
 Save your changes and build the project. Then open the command window in the project folder and enter the following command:
 
-```console
+```dotnetcli
 dotnet ef migrations add Inheritance
 ```
 
 Don't run the `database update` command yet. That command will result in lost data because it will drop the Instructor table and rename the Student table to Person. You need to provide custom code to preserve existing data.
 
-Open *Migrations/\<timestamp>_Inheritance.cs* and replace the `Up` method with the following code:
+Open `Migrations/<timestamp>_Inheritance.cs` and replace the `Up` method with the following code:
 
 [!code-csharp[](intro/samples/cu/Migrations/20170216215525_Inheritance.cs?name=snippet_Up)]
 
@@ -122,7 +125,7 @@ This code takes care of the following database update tasks:
 
 Run the `database update` command:
 
-```console
+```dotnetcli
 dotnet ef database update
 ```
 
@@ -145,7 +148,7 @@ Right-click the Person table, and then click **Show Table Data** to see the disc
 
 ## Get the code
 
-[Download or view the completed application.](https://github.com/aspnet/AspNetCore.Docs/tree/master/aspnetcore/data/ef-mvc/intro/samples/cu-final)
+[Download or view the completed application.](https://github.com/dotnet/AspNetCore.Docs/tree/main/aspnetcore/data/ef-mvc/intro/samples/cu-final)
 
 ## Additional resources
 

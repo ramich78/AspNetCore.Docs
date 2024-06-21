@@ -4,19 +4,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using TodoApi.Models;
+using Microsoft.AspNetCore.Hosting;
 
 namespace TodoApi
 {
     public class Startup4
     {
-        #region snippet_ConfigureServices
+        // <snippet_ConfigureServices>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<TodoContext>(opt =>
                 opt.UseInMemoryDatabase("TodoList"));
             services.AddMvc();
 
-            #region snippet_AddSwaggerGen
+            // <snippet_AddSwaggerGen>
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
@@ -39,27 +40,30 @@ namespace TodoApi
                     }
                 });
             });
-            #endregion
+            // </snippet_AddSwaggerGen>
         }
-        #endregion
+        // </snippet_ConfigureServices>
 
-        #region snippet_Configure
-        public void Configure(IApplicationBuilder app)
+        // <snippet_Configure>
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             app.UseStaticFiles();
 
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger();
-
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-            // specifying the Swagger JSON endpoint.
-            app.UseSwaggerUI(c =>
+            if (env.IsDevelopment())
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-            });
+                // Enable middleware to serve generated Swagger as a JSON endpoint, only in a development environment.
+                app.UseSwagger();
+
+                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+                // specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(c =>  // UseSwaggerUI is called only in Development.
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                });
+            }
 
             app.UseMvc();
         }
-        #endregion
+        // </snippet_Configure>
     }
 }

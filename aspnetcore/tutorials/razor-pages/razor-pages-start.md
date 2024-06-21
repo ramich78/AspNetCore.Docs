@@ -1,48 +1,44 @@
 ---
 title: "Tutorial: Get started with Razor Pages in ASP.NET Core"
-author: rick-anderson
-description: This series of tutorials shows how to use Razor Pages in ASP.NET Core. Learn how to create a model, generate code for Razor pages, use Entity Framework Core and SQL Server for data access, add search functionality, add input validation, and use migrations to update the model.
-ms.author: riande
-ms.date: 6/3/2019
+author: wadepickett
+description: This is the first tutorial of a series that teaches the basics of building an ASP.NET Core Razor Pages web app.
+ms.author: wpickett
+monikerRange: '>= aspnetcore-3.1'
+ms.date: 06/11/2024
 uid: tutorials/razor-pages/razor-pages-start
 ---
 
 # Tutorial: Get started with Razor Pages in ASP.NET Core
 
+[!INCLUDE[](~/includes/not-latest-version.md)]
+
 By [Rick Anderson](https://twitter.com/RickAndMSFT)
 
-This is the first tutorial of a series. [The series](xref:tutorials/razor-pages/index) teaches the basics of building an ASP.NET Core Razor Pages web app.
+:::moniker range=">= aspnetcore-9.0"
 
-[!INCLUDE[](~/includes/advancedRP.md)]
+This is the first tutorial of a series that teaches the basics of building an ASP.NET Core Razor Pages web app.
 
-At the end of the series, you'll have an app that manages a database of movies.  
+For a more advanced introduction aimed at developers who are familiar with controllers and views, see [Introduction to Razor Pages](xref:razor-pages/index). For a video introduction, see [Entity Framework Core for Beginners](https://www.youtube.com/playlist?list=PLdo4fOcmZ0oXCPdC3fTFA3Z79-eVH3K-s).
 
-[!INCLUDE[View or download sample code](~/includes/rp/download.md)]
+[!INCLUDE [Choose web UI](~/includes/choose-ui-link.md)]
 
-In this tutorial, you:
+At the end of this tutorial, you'll have a Razor Pages web app that manages a database of movies.
 
-> [!div class="checklist"]
-> * Create a Razor Pages web app.
-> * Run the app.
-> * Examine the project files.
-
-At the end of this tutorial, you'll have a working Razor Pages web app that you'll build on in later tutorials.
-
-![Home or Index page](razor-pages-start/_static/home2.2.png)
+![Home or Index page](~/tutorials/razor-pages/razor-pages-start/_static/8/home8.png)
 
 ## Prerequisites
 
 # [Visual Studio](#tab/visual-studio)
 
-[!INCLUDE[](~/includes/net-core-prereqs-vs2019-2.2.md)]
+[!INCLUDE[](~/includes/net-prereqs-vs-8.0.md)]
 
 # [Visual Studio Code](#tab/visual-studio-code)
 
-[!INCLUDE[](~/includes/net-core-prereqs-vsc-2.2.md)]
+[!INCLUDE[](~/includes/net-prereqs-vsc-8.0.md)]
 
 # [Visual Studio for Mac](#tab/visual-studio-mac)
 
-[!INCLUDE[](~/includes/net-core-prereqs-mac-2.2.md)]
+[!INCLUDE[](~/includes/net-prereqs-mac-8.0.md)]
 
 ---
 
@@ -50,61 +46,59 @@ At the end of this tutorial, you'll have a working Razor Pages web app that you'
 
 # [Visual Studio](#tab/visual-studio)
 
-* From the Visual Studio **File** menu, select **New** > **Project**.
+* Start Visual Studio and select **New project**.
+* In the **Create a new project** dialog, select **ASP.NET Core Web App (Razor Pages)** > **Next**.
+* In the **Configure your new project** dialog, enter `RazorPagesMovie` for **Project name**. It's important to name the project **RazorPagesMovie**, including matching the capitalization, so the namespaces will match when you copy and paste example code.
+* Select **Next**.
+* In the **Additional information** dialog:
+  * Select **.NET 8.0 (Long Term Support)**.
+  * Verify: **Do not use top-level statements** is unchecked.
+* Select **Create**.
 
-* Create a new ASP.NET Core Web Application and select **Next**.
-
-  ![new ASP.NET Core Web Application](razor-pages-start/_static/np_2.1.png)
-
-* Name the project **RazorPagesMovie**. It's important to name the project *RazorPagesMovie* so the namespaces will match when you copy and paste code.
-
-  ![new ASP.NET Core Web Application](razor-pages-start/_static/config.png)
-
-* Select **ASP.NET Core 2.2** in the dropdown, **Web Application**, and then select **Create**.
-
-![new ASP.NET Core Web Application](razor-pages-start/_static/np_2_2.2.png)
+   ![Additional information](~/tutorials/razor-pages/razor-pages-start/_static/8/net8-additional-info.png)
 
   The following starter project is created:
 
-  ![Solution Explorer](razor-pages-start/_static/se2.2.png)
+   ![Solution Explorer](~/tutorials/razor-pages/razor-pages-start/_static/8/solution-explorer-project.png)
+
+For alternative approaches to create the project, see [Create a new project in Visual Studio](/visualstudio/ide/create-new-project).
 
 # [Visual Studio Code](#tab/visual-studio-code)
 
-* Open the [integrated terminal](https://code.visualstudio.com/docs/editor/integrated-terminal).
+The tutorial assumes familiarity with VS Code. For more information, see [Getting started with VS Code](https://code.visualstudio.com/docs).
 
-* Change to the directory (`cd`) which will contain the project.
-
+* Select **New Terminal** from the **Terminal** menu to open the [integrated terminal](https://code.visualstudio.com/docs/editor/integrated-terminal).
+* Change to the directory (`cd`) that will contain the project.
 * Run the following commands:
 
-  ```console
+  ```dotnetcli
   dotnet new webapp -o RazorPagesMovie
   code -r RazorPagesMovie
   ```
 
-  * The `dotnet new` command creates a new Razor Pages project in the *RazorPagesMovie* folder.
-  * The `code` command opens the *RazorPagesMovie* folder in the current instance of Visual Studio Code.
+  The `dotnet new` command creates a new Razor Pages project in the *RazorPagesMovie* folder.
 
-* After the status bar's OmniSharp flame icon turns green, a dialog asks **Required assets to build and debug are missing from 'RazorPagesMovie'. Add them?** Select **Yes**.
+  The `code` command opens the *RazorPagesMovie* folder in the current instance of Visual Studio Code.
 
-  A *.vscode* directory, containing *launch.json* and *tasks.json* files, is added to the project's root directory.
+[!INCLUDE[](~/includes/vscode-trust-authors-add-assets.md)]
 
 # [Visual Studio for Mac](#tab/visual-studio-mac)
 
-From a terminal, run the following command:
+* In Visual Studio for Mac 2022, select **File** > **New Project...**.
 
-<!-- TODO: update these instruction once mac support 2.2 projects -->
+* In the **Choose a template for your new project** dialog:
+  * Select **Web and Console** > **App** > **Web Application**.
+  * Select **Continue**.
 
-```console
-dotnet new webapp -o RazorPagesMovie
-```
+* In the **Configure your new Web Application** dialog:
+  * Verify: **Target framework** is set to **.NET 8.0** (or later).
+  * Verify: **Authentication** is set to **No Authentication**.
+  * Verify: **Do not use top-level statements** is unchecked.
+  * Select **Continue**.
 
-The preceding commands use the [.NET Core CLI](/dotnet/core/tools/dotnet) to create a Razor Pages project.
-
-## Open the project
-
-From Visual Studio, select **File > Open**, and then select the *RazorPagesMovie.csproj* file.
-
-<!-- End of VS tabs -->
+* In the **Configure your new Web Application** dialog:
+  * Enter `RazorPagesMovie` for **Project name**. It's important to name the project **RazorPagesMovie**, including matching the capitalization, so the namespaces will match when you copy and paste example code.
+  * Select **Create**.
 
 ---
 
@@ -112,105 +106,127 @@ From Visual Studio, select **File > Open**, and then select the *RazorPagesMovie
 
 # [Visual Studio](#tab/visual-studio)
 
-* Press Ctrl+F5 to run without the debugger.
+<!-- replace all of this with updated includes  -->
 
-  [!INCLUDE[](~/includes/trustCertVS.md)]
+Select **RazorPagesMovie** in **Solution Explorer**, and then press <kbd>Ctrl</kbd>+<kbd>F5</kbd> to run the app without the debugger.
 
-  Visual Studio starts [IIS Express](/iis/extensions/introduction-to-iis-express/iis-express-overview) and runs the app. The address bar shows `localhost:port#` and not something like `example.com`. That's because `localhost` is the standard hostname for the local computer. Localhost only serves web requests from the local computer. When Visual Studio creates a web project, a random port is used for the web server.
+Visual Studio displays the following dialog when a project is not yet configured to use SSL:
 
-* On the app's home page, select **Accept** to consent to tracking.
+![This project is configured to use SSL. To avoid SSL warnings in the browser you can choose to trust the self-signed certificate that IIS Express has generated. Would you like to trust the IIS Express SSL certificate?](~/getting-started/_static/trustCertVS22.png)
 
-  This app doesn't track personal information, but the project template includes the consent feature in case you need it to comply with the European Union's [General Data Protection Regulation (GDPR)](xref:security/gdpr).
+Select **Yes** if you trust the IIS Express SSL certificate.
 
-  ![Home or Index page](razor-pages-start/_static/homeGDPR2.2.png)
+The following dialog is displayed:
 
-  The following image shows the app after you give consent to tracking:
+![Security warning dialog](~/getting-started/_static/cert.png)
 
-  ![Home or Index page](razor-pages-start/_static/home2.2.png)
-  
+Select **Yes** if you agree to trust the development certificate.
+
+[!INCLUDE[trust FF](~/includes/trust-ff.md)]
+
+Visual Studio:
+
+* Runs the app, which  launches the [Kestrel server](xref:fundamentals/servers/kestrel).
+* Launches the default browser at `https://localhost:<port>`, which displays the apps UI. `<port>` is the random port that is assigned when the app was created.
+
+Close the browser window.
+
 # [Visual Studio Code](#tab/visual-studio-code)
 
-  [!INCLUDE[](~/includes/trustCertVSC.md)]
+[!INCLUDE[](~/includes/trustCertVSC.md)]
 
-* Press **Ctrl-F5** to run without the debugger.
+In Visual Studio Code, press <kbd>Ctrl</kbd>+<kbd>F5</kbd> (Windows) or <kbd>⌘</kbd>+<kbd>F5</kbd> (macOS) to run the app without debugging.
 
-  Visual Studio Code starts [Kestrel](xref:fundamentals/servers/kestrel), launches a browser, and navigates to `http://localhost:5001`. The address bar shows `localhost:port#` and not something like `example.com`. That's because `localhost` is the standard hostname for  local computer. Localhost only serves web requests from the local computer.
+At the **Select debugger** prompt, select **.NET 5+ and .NET Core**.
 
-* On the app's home page, select **Accept** to consent to tracking.
+![Select environment dialog](~/tutorials/razor-pages/razor-pages-start/_static/vsc-select-debugger.png)
 
-  This app doesn't track personal information, but the project template includes the consent feature in case you need it to comply with the European Union's [General Data Protection Regulation (GDPR)](xref:security/gdpr).
+The default browser launched with the following URL: `https://localhost:<port>` where `<port>` is the randomly generated port number.
 
-  ![Home or Index page](razor-pages-start/_static/homeGDPR2.2.png)
+Close the browser window.
 
-  The following image shows the app after you give consent to tracking:
+In Visual Studio Code, from the *Run* menu, select *Stop Debugging* or press <kbd>Shift</kbd>+<kbd>F5</kbd> to stop the app.
 
-  ![Home or Index page](razor-pages-start/_static/home2.2.png)
-  
 # [Visual Studio for Mac](#tab/visual-studio-mac)
 
-  [!INCLUDE[](~/includes/trustCertMac.md)]
+Select **Debug** > **Start Debugging** to launch the app.
 
-* Press **Cmd-Opt-F5** to run without the debugger.
+Visual Studio for Mac launches a browser and navigates to `https://localhost:<port>`, where `<port>` is the port number randomly assigned at project creation and is set in `Properties/launchSettings.json`.
 
-  Visual Studio starts [Kestrel](xref:fundamentals/servers/kestrel), launches a browser, and navigates to `http://localhost:5001`.
-
-* On the app's home page, select **Accept** to consent to tracking.
-
-  This app doesn't track personal information, but the project template includes the consent feature in case you need it to comply with the European Union's [General Data Protection Regulation (GDPR)](xref:security/gdpr).
-
-  ![Home or Index page](razor-pages-start/_static/homeGDPR2.2_safari.png)
-
-  The following image shows the app after you give consent to tracking:
-
-  ![Home or Index page](razor-pages-start/_static/home2.2_safari.png)
-
-<!-- End of VS tabs -->
+Close the browser window.
 
 ---
 
+<!-- 
+Each new version, change the layout file to use the non-minified CSS. 
+See https://github.com/dotnet/AspNetCore.Docs/issues/21193
+-->
+
 ## Examine the project files
 
-Here's an overview of the main project folders and files that you'll work with in later tutorials.
+The following sections contain an overview of the main project folders and files that you'll work with in later tutorials.
 
 ### Pages folder
 
 Contains Razor pages and supporting files. Each Razor page is a pair of files:
 
-* A *.cshtml* file that contains HTML markup with C# code using Razor syntax.
-* A *.cshtml.cs* file that contains C# code that handles page events.
+* A `.cshtml` file that has HTML markup with C# code using Razor syntax.
+* A `.cshtml.cs` file that has C# code that handles page events.
 
-Supporting files have names that begin with an underscore. For example, the *_Layout.cshtml* file configures UI elements common to all pages. This file sets up the navigation menu at the top of the page and the copyright notice at the bottom of the page. For more information, see <xref:mvc/views/layout>.
+Supporting files have names that begin with an underscore. For example, the `_Layout.cshtml` file configures UI elements common to all pages. `_Layout.cshtml` sets up the navigation menu at the top of the page and the copyright notice at the bottom of the page. For more information, see <xref:mvc/views/layout>.
 
 ### wwwroot folder
 
-Contains static files, such as HTML files, JavaScript files, and CSS files. For more information, see <xref:fundamentals/static-files>.
+Contains static assets, like HTML files, JavaScript files, and CSS files. For more information, see <xref:fundamentals/static-files>.
 
-### appSettings.json
+### `appsettings.json`
 
-Contains configuration data, such as connection strings. For more information, see <xref:fundamentals/configuration/index>.
+Contains configuration data, like connection strings. For more information, see <xref:fundamentals/configuration/index>.
 
 ### Program.cs
 
-Contains the entry point for the program. For more information, see <xref:fundamentals/host/generic-host>.
+Contains the following code:
 
-### Startup.cs
+[!code-csharp[](~/tutorials/razor-pages/razor-pages-start/sample/RazorPagesMovie80/Program1Snip.cs?name=snippet_all)]
 
-Contains code that configures app behavior, such as whether it requires consent for cookies. For more information, see <xref:fundamentals/startup>.
+The following lines of code in this file create a `WebApplicationBuilder` with preconfigured defaults, add Razor Pages support to the [Dependency Injection (DI) container](xref:fundamentals/dependency-injection), and builds the app:
 
-## Additional resources
+[!code-csharp[](~/tutorials/razor-pages/razor-pages-start/sample/RazorPagesMovie80/Program1Snip.cs?name=snippet_di)]
 
-* [Youtube version of this tutorial](https://www.youtube.com/watch?v=F0SP7Ry4flQ&feature=youtu.be)
+The developer exception page is enabled by default and provides helpful information on exceptions. Production apps should not be run in development mode because the developer exception page can leak sensitive information.
+
+The following code sets the exception endpoint to `/Error` and enables [HTTP Strict Transport Security Protocol (HSTS)](xref:security/enforcing-ssl#http-strict-transport-security-protocol-hsts) when the app is ***not*** running in development mode:
+
+[!code-csharp[](~/tutorials/razor-pages/razor-pages-start/sample/RazorPagesMovie80/Program1Snip.cs?name=snippet_env)]
+
+For example, the preceding code runs when the app is in production or test mode. For more information, see [Use multiple environments in ASP.NET Core](xref:fundamentals/environments).
+
+The following code enables various [Middleware](xref:fundamentals/middleware/index):
+
+* `app.UseHttpsRedirection();` : Redirects HTTP requests to HTTPS.
+* `app.UseStaticFiles();` : Enables static files, such as HTML, CSS, images, and JavaScript to be served. For more information, see <xref:fundamentals/static-files>.
+* `app.UseRouting();` : Adds route matching to the middleware pipeline. For more information, see <xref:fundamentals/routing>
+* `app.MapRazorPages();`: Configures endpoint routing for Razor Pages.
+* `app.UseAuthorization();` : Authorizes a user to access secure resources. This app doesn't use authorization, therefore this line could be removed.
+* `app.Run();` : Runs the app.
+
+## Troubleshooting with the completed sample
+
+If you run into a problem you can't resolve, compare your code to the completed project. [View or download completed project](https://github.com/dotnet/AspNetCore.Docs/tree/main/aspnetcore/tutorials/razor-pages/razor-pages-start/sample/RazorPagesMovie80) ([how to download](xref:index#how-to-download-a-sample)).
 
 ## Next steps
 
-In this tutorial, you:
-
-> [!div class="checklist"]
-> * Created a Razor Pages web app.
-> * Ran the app.
-> * Examined the project files.
-
-Advance to the next tutorial in the series:
-
 > [!div class="step-by-step"]
-> [Add a model](xref:tutorials/razor-pages/model)
+> [Next: Add a model](xref:tutorials/razor-pages/model)
+
+:::moniker-end
+
+[!INCLUDE[](~/tutorials/razor-pages/razor-pages-start/includes/razor-pages-start8.md)]
+
+[!INCLUDE[](~/tutorials/razor-pages/razor-pages-start/includes/razor-pages-start7.md)]
+
+[!INCLUDE[](~/tutorials/razor-pages/razor-pages-start/includes/razor-pages-start6.md)]
+
+[!INCLUDE[](~/tutorials/razor-pages/razor-pages-start/includes/razor-pages-start5.md)]
+
+[!INCLUDE[](~/tutorials/razor-pages/razor-pages-start/includes/razor-pages-start3.md)]

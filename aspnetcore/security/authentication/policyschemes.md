@@ -3,7 +3,7 @@ title: Policy schemes in ASP.NET Core
 author: rick-anderson
 description: Authentication policy schemes make it easier to have a single logical authentication scheme
 ms.author: riande
-ms.date: 2/28/2019
+ms.date: 12/05/2019
 uid: security/authentication/policyschemes
 ---
 
@@ -14,7 +14,7 @@ Authentication policy schemes make it easier to have a single logical authentica
 * Easy to forward any authentication action to another scheme.
 * Forward dynamically based on the request.
 
-All authentication schemes that use derived <xref:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions> and the associated [`AuthenticationHandler<TOptions>`](/dotnet/api/microsoft.aspnetcore.authentication.authenticationhandler-1):
+All authentication schemes that use derived <xref:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions> and the associated <xref:Microsoft.AspNetCore.Authentication.AuthenticationHandler%601>:
 
 * Are automatically policy schemes in ASP.NET Core 2.1 and later.
 * Can be enabled via configuring the scheme's options.
@@ -27,7 +27,7 @@ The following example shows a higher level scheme that combines lower level sche
 
 [!code-csharp[sample](policyschemes/samples/Startup.cs?name=snippet1)]
 
-The following example enables dynamic selection of schemes on a per request basis. That is, how to mix cookies and API authentication.
+The following example enables dynamic selection of schemes on a per request basis. That is, how to mix cookies and API authentication:
 
  <!-- REVIEW, missing If set in public Func<HttpContext, string> ForwardDefaultSelector -->
 

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace HttpClientFactorySample.Pages
 {
-    #region snippet1
+    // <snippet1>
     public class NamedClientModel : PageModel
     {
         private readonly IHttpClientFactory _clientFactory;
@@ -27,7 +27,7 @@ namespace HttpClientFactorySample.Pages
         public async Task OnGet()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, 
-                "repos/aspnet/AspNetCore.Docs/pulls");
+                "repos/dotnet/AspNetCore.Docs/pulls");
 
             var client = _clientFactory.CreateClient("github");
 
@@ -45,5 +45,5 @@ namespace HttpClientFactorySample.Pages
             }
         }
     }
-    #endregion
+    // </snippet1>
 }

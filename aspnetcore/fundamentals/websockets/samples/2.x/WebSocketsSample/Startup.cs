@@ -40,49 +40,49 @@ namespace EchoApp
             }
 
 #if NoOptions
-            #region UseWebSockets
+            // <snippet_UseWebSockets>
             app.UseWebSockets();
-            #endregion
+            // </snippet_UseWebSockets>
 #endif
 #if UseOptions
-            #region UseWebSocketsOptions
-            var webSocketOptions = new WebSocketOptions() 
-            {
-                KeepAliveInterval = TimeSpan.FromSeconds(120),
-                ReceiveBufferSize = 4 * 1024
-            };
-
-            app.UseWebSockets(webSocketOptions);
-            #endregion
-#endif
-
-#if UseOptionsAO
-            #region UseWebSocketsOptionsAO
+            // <snippet_UseWebSocketsOptions>
             var webSocketOptions = new WebSocketOptions()
             {
                 KeepAliveInterval = TimeSpan.FromSeconds(120),
-                ReceiveBufferSize = 4 * 1024
+            };
+
+            app.UseWebSockets(webSocketOptions);
+            // </snippet_UseWebSocketsOptions>
+#endif
+
+#if UseOptionsAO
+            // <snippet_UseWebSocketsOptionsAO>
+            var webSocketOptions = new WebSocketOptions()
+            {
+                KeepAliveInterval = TimeSpan.FromSeconds(120),
             };
             webSocketOptions.AllowedOrigins.Add("https://client.com");
             webSocketOptions.AllowedOrigins.Add("https://www.client.com");
 
             app.UseWebSockets(webSocketOptions);
-            #endregion
+            // </snippet_UseWebSocketsOptionsAO>
 #endif
 
-            #region AcceptWebSocket
+            // <snippet_AcceptWebSocket>
             app.Use(async (context, next) =>
             {
                 if (context.Request.Path == "/ws")
                 {
                     if (context.WebSockets.IsWebSocketRequest)
                     {
-                        WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                        await Echo(context, webSocket);
+                        using (WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync())
+                        {
+                            await Echo(context, webSocket);
+                        }
                     }
                     else
                     {
-                        context.Response.StatusCode = 400;
+                        context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
                     }
                 }
                 else
@@ -91,10 +91,10 @@ namespace EchoApp
                 }
 
             });
-#endregion
+            // </snippet_AcceptWebSocket>
             app.UseFileServer();
         }
-#region Echo
+        // <snippet_Echo>
         private async Task Echo(HttpContext context, WebSocket webSocket)
         {
             var buffer = new byte[1024 * 4];
@@ -107,6 +107,6 @@ namespace EchoApp
             }
             await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
         }
-#endregion
+        // </snippet_Echo>
     }
 }

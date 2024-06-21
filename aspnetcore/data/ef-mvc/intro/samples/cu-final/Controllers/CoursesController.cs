@@ -113,6 +113,7 @@ namespace ContosoUniversity.Controllers
                 try
                 {
                     await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateException /* ex */)
                 {
@@ -121,7 +122,6 @@ namespace ContosoUniversity.Controllers
                         "Try again, and if the problem persists, " +
                         "see your system administrator.");
                 }
-                return RedirectToAction(nameof(Index));
             }
             PopulateDepartmentsDropDownList(courseToUpdate.DepartmentID);
             return View(courseToUpdate);
@@ -177,7 +177,7 @@ namespace ContosoUniversity.Controllers
             if (multiplier != null)
             {
                 ViewData["RowsAffected"] =
-                    await _context.Database.ExecuteSqlCommandAsync(
+                    await _context.Database.ExecuteSqlRawAsync(
                         "UPDATE Course SET Credits = Credits * {0}",
                         parameters: multiplier);
             }

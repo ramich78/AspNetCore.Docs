@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace HttpClientFactorySample.GitHub
@@ -8,7 +9,7 @@ namespace HttpClientFactorySample.GitHub
     /// <summary>
     /// Exposes methods to return GitHub API data
     /// </summary>
-    #region snippet1
+    // <snippet1>
     public class GitHubService
     {
         public HttpClient Client { get; }
@@ -17,10 +18,10 @@ namespace HttpClientFactorySample.GitHub
         {
             client.BaseAddress = new Uri("https://api.github.com/");
             // GitHub API versioning
-            client.DefaultRequestHeaders.Add("Accept", 
+            client.DefaultRequestHeaders.Add("Accept",
                 "application/vnd.github.v3+json");
             // GitHub requires a user-agent
-            client.DefaultRequestHeaders.Add("User-Agent", 
+            client.DefaultRequestHeaders.Add("User-Agent",
                 "HttpClientFactory-Sample");
 
             Client = client;
@@ -29,15 +30,14 @@ namespace HttpClientFactorySample.GitHub
         public async Task<IEnumerable<GitHubIssue>> GetAspNetDocsIssues()
         {
             var response = await Client.GetAsync(
-                "/repos/aspnet/AspNetCore.Docs/issues?state=open&sort=created&direction=desc");
+                "/repos/dotnet/AspNetCore.Docs/issues?state=open&sort=created&direction=desc");
 
             response.EnsureSuccessStatusCode();
 
-            var result = await response.Content
-                .ReadAsAsync<IEnumerable<GitHubIssue>>();
-
-            return result;
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            return await JsonSerializer.DeserializeAsync
+                <IEnumerable<GitHubIssue>>(responseStream);
         }
     }
-    #endregion
+    // </snippet1>
 }

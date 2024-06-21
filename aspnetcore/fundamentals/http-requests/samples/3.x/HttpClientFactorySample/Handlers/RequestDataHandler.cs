@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace HttpClientFactorySample.Handlers
 {
-    #region snippet1
+    // <snippet1>
     public class RequestDataHandler : DelegatingHandler
     {
         private readonly ILogger<RequestDataHandler> _logger;
@@ -25,7 +25,7 @@ namespace HttpClientFactorySample.Handlers
         {
             var identifier = Guid.NewGuid(); // some information we want to generate and add per request
 
-            _logger.LogInformation($"Starting request {identifier}");
+            _logger.LogInformation("Starting request {Identifier}", identifier);
 
             request.Headers.Add(RequestSourceHeaderName, RequestSource);
             request.Headers.Add(RequestIdHeaderName, identifier.ToString());
@@ -33,5 +33,5 @@ namespace HttpClientFactorySample.Handlers
             return base.SendAsync(request, cancellationToken);
         }
     }
-    #endregion
+    // </snippet1>
 }

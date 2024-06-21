@@ -1,11 +1,12 @@
+<!-- USED in RP and MVC tutorial for .NET 5 and earlier-->
 
 ## Add validation rules to the movie model
 
-Open the *Movie.cs* file. The DataAnnotations namespace provides a set of built-in validation attributes that are applied declaratively to a class or property. DataAnnotations also contains formatting attributes like `DataType` that help with formatting and don't provide any validation.
+The DataAnnotations namespace provides a set of built-in validation attributes that are applied declaratively to a class or property. DataAnnotations also contains formatting attributes like `DataType` that help with formatting and don't provide any validation.
 
 Update the `Movie` class to take advantage of the built-in `Required`, `StringLength`, `RegularExpression`, and `Range` validation attributes.
 
-[!code-csharp[](~/tutorials/first-mvc-app/start-mvc//sample/MvcMovie22/Models/MovieDateRatingDA.cs?name=snippet1)]
+[!code-csharp[](~/tutorials/first-mvc-app/start-mvc/sample/MvcMovie22/Models/MovieDateRatingDA.cs?name=snippet1)]
 
 The validation attributes specify behavior that you want to enforce on the model properties they're applied to:
 
@@ -13,13 +14,12 @@ The validation attributes specify behavior that you want to enforce on the model
 * The `RegularExpression` attribute is used to limit what characters can be input. In the preceding code, "Genre":
 
   * Must only use letters.
-  * The first letter is required to be uppercase. White space, numbers, and special
-   characters are not allowed.
+  * The first letter must be uppercase. White spaces are allowed, while numbers and special characters aren't allowed.
 
 * The `RegularExpression` "Rating":
 
   * Requires that the first character be an uppercase letter.
-  * Allows special characters and numbers in  subsequent spaces. "PG-13" is valid for a rating, but fails for a "Genre".
+  * Allows special characters and numbers in subsequent spaces. "PG-13" is valid for a rating, but fails for a "Genre".
 
 * The `Range` attribute constrains a value to within a specified range.
 * The `StringLength` attribute lets you set the maximum length of a string property, and optionally its minimum length.
